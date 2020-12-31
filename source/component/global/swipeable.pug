@@ -1,0 +1,13 @@
+.swipeable(
+  :class = '{"is-swiping": direction}'
+  @click = 'click'
+  @mousedown = 'start'
+  @mouseleave = 'cancel'
+  @mousemove = 'move'
+  @mouseup = 'end'
+  @touchcancel = 'cancel'
+  @touchend = 'end'
+  @touchmove = 'move'
+  @touchstart = 'start'
+)
+  slot

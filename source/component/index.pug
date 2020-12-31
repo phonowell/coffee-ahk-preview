@@ -1,0 +1,12 @@
+#app
+
+  textarea#coffee(
+    v-model = 'coffee'
+    @change.lazy = 'transpile_()'
+    placeholder = '.coffee'
+  )
+
+  textarea#ahk(
+    v-model = 'ahk'
+    placeholder = '.ahk'
+  )

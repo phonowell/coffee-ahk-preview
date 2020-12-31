@@ -1,0 +1,9 @@
+baseApi:
+  development: '//localhost:8080'
+  preview: '//manga.bilibili.com/twirp/activity.v3.Activity'
+  production: '//manga.bilibili.com/twirp/activity.v3.Activity'
+
+isDebug:
+  development: false
+  preview: true
+  production: true

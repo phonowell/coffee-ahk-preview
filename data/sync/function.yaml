@@ -1,0 +1,13 @@
+- source/function/alert.ts
+- source/function/bindArea.ts
+- source/function/confirm_.ts
+- source/function/delay.ts
+- source/function/i.ts
+- source/function/info.ts
+- source/function/mask.ts
+- source/function/menu_.ts
+- source/function/parseString.ts
+- source/function/point.ts
+- source/function/prompt_.coffee@activity
+- source/function/type.ts
+- source/function/wait.ts

@@ -1,0 +1,50 @@
+normalize-css()
+global-reset()
+
+@import '~@/include/animation'
+@import '~@/include/fn'
+
+html, body
+  scroll-behavior smooth
+  text-align center
+  background-color #222
+  background-image linear-gradient(top, #111, #333)
+
+#app
+  position relative
+  width 100vw
+  height 100vh
+  margin 0 auto
+  text-align center
+  font-size 0
+  overflow hidden
+  user-select none
+  -webkit-tap-highlight-color rgba(#000, 0)
+
+textarea
+  $box()
+  display block
+  border 0
+  outline 0
+  appearance none
+  resize none
+  position absolute
+  top 5vh
+  width 45vw
+  height 90vh
+  margin 0
+  padding 16px
+  background-color #555
+  color #fff
+  font-size 16px
+  line-height 1.5
+
+#coffee
+  left 5vw
+  border-radius 16px 0 0 16px
+
+#ahk
+  right 5vw
+  background-color #777
+  box-shadow 0 4px 8px rgba(#000, 0.2) inset
+  border-radius 0 16px 16px 0

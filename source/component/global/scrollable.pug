@@ -1,0 +1,11 @@
+.scrollable(:class = '`theme-${theme}`')
+
+  .container-scrollable(
+    ref = 'container'
+    :class = '{"is-frozen": isFrozen}'
+    @scroll = 'next()'
+  )
+    slot
+
+  .scrollbar-scrollable
+    .scroller-scrollable(:style = 'style')

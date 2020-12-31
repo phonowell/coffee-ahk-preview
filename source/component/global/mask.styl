@@ -1,0 +1,32 @@
+#mask
+  fixed left top
+  width 100vw
+  height 100vh
+  display flex
+  will-change opacity
+  background-color rgba(#000, 0.8)
+  user-select none
+  z-index 10
+  backdrop-filter blur(4px)
+
+  &.theme-default
+    > div
+      margin-top (7.5rem - 6.4rem) * 0.5
+      border-radius 16px
+
+  > div
+    position relative
+    margin auto
+    animation slideIn 500ms $ease-in-out-back both
+    will-change opacity transform
+    z-index 15
+
+// animation
+@keyframes slideIn
+  0%
+    opacity 0
+    transform translateY(32px)
+
+  100%
+    opacity 1
+    transform translateY(0)

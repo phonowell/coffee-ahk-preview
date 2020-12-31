@@ -1,0 +1,51 @@
+.scrollable
+  size 100%
+  position relative
+  overflow hidden
+
+  &.theme-light, &.theme-white
+    .scroller-scrollable
+      background-color rgba(#fff, 0.5)
+
+  .container-scrollable
+    absolute left top
+    size 100%
+    overflow hidden
+    overflow-y auto
+    padding-right 20px
+    scroll-behavior smooth
+    -webkit-overflow-scrolling touch
+
+    &::-webkit-scrollbar
+      display none
+
+    &.is-frozen
+      pointer-events none
+
+  .scrollbar-scrollable
+    absolute right top
+    width 2px
+    height 100%
+    transform scaleY(0.98)
+    pointer-events none
+
+  .scroller-scrollable
+    absolute left top
+    size 100%
+    background-color rgba(#000, 0.5)
+    will-change transform
+    transition transform 200ms ease
+    transform-origin top
+
+  h1, p
+    line-height 1.5
+    margin-bottom 1em
+    padding-right 0.1rem
+
+  h1
+    font-size 0.3rem
+    font-weight bold
+
+  p
+    font-size 0.24rem
+    text-align left

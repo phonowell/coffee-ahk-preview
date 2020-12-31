@@ -1,0 +1,8 @@
+- data/sync/component.yaml
+- data/sync/function.yaml
+- data/sync/kokoro.yaml
+- data/sync/mock.yaml
+- data/sync/style.yaml
+- data/sync/sync.yaml@activity
+- data/sync/task.yaml
+- data/sync/toolkit.yaml

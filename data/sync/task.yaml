@@ -1,0 +1,9 @@
+- task/alice.ts
+- task/build.ts@activity
+- task/cpt.ts@activity
+- task/end.ts@activity
+- task/prepare.ts@activity
+- task/sync.ts
+- task/tsconfig.json
+- task/update.ts@activity
+- task/watch.ts@activity
