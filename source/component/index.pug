@@ -1,12 +1,11 @@
 #app
 
-  textarea#coffee(
+  codemirror#coffee(
     v-model = 'coffee'
-    @change.lazy = 'transpile_()'
-    placeholder = '.coffee'
+    :options = 'option'
   )
 
   textarea#ahk(
     v-model = 'ahk'
-    placeholder = '.ahk'
+    readonly = 'true'
   )

@@ -8,6 +8,5 @@
 - source/function/menu_.ts
 - source/function/parseString.ts
 - source/function/point.ts
-- source/function/prompt_.coffee@activity
 - source/function/type.ts
 - source/function/wait.ts

@@ -2,8 +2,9 @@
 
   .container-scrollable(
     ref = 'container'
-    :class = '{"is-frozen": isFrozen}'
-    @scroll = 'next()'
+    @scroll = 'atScroll'
+    @touchstart = 'atScrollStart'
+    @touchmove = 'atScroll'
   )
     slot
 

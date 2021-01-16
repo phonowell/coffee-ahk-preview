@@ -1,11 +1,28 @@
+# variable
+
+cache = 0
+
 # function
+
+@atScroll = (e) ->
+
+  {scrollTop, scrollHeight, offsetHeight} = @$refs.container
+
+  if e.type == 'touchmove'
+    if scrollTop <= 0 and e.targetTouches[0].clientY - cache >= 0
+      if e.cancelable then e.preventDefault()
+      @emitAt 'top'
+    else if scrollTop + offsetHeight >= scrollHeight and e.targetTouches[0].clientY - cache <= 0
+      if e.cancelable then e.preventDefault()
+      @emitAt 'bottom'
+
+  @render()
+
+@atScrollStart = (e) -> cache = e.targetTouches[0].clientY
 
 @emitAt = (position) ->
 
   {isMobile} = window.self.kuma.env
-
-  @isFrozen = true
-  $.delay (if isMobile then 100 else 300), => @isFrozen = false
 
   if position == 'top'
     @$emit 'edge'
@@ -14,9 +31,9 @@
     @$emit 'edge'
     @$emit 'edge-bottom'
 
-@enter = -> @$nextTick => @next()
+@enter = -> @$nextTick => @render()
 
-@next = _.throttle ->
+@render = _.throttle (e) ->
 
   {scrollTop, scrollHeight, offsetHeight} = @$refs.container
 
@@ -38,11 +55,7 @@
   transform = "translateY(#{top * offsetHeight}px) scaleY(#{height})"
   @style = {transform}
 
-  if scrollTop <= 0 then @emitAt 'top'
-  else if scrollTop + offsetHeight >= scrollHeight
-    @emitAt 'bottom'
-
-, 100, trailing: true
+, 200, trailing: true
 
 @scrollTop = (value) ->
   unless value?
@@ -52,7 +65,6 @@
 # export
 export default
   data: ->
-    isFrozen: false
     style: {}
 
   props:

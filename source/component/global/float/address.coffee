@@ -31,7 +31,7 @@ modeFirst = ''
 @sync_ = ->
 
   url = '/twirp/activity.v1.Activity/GetPrizeList'
-  # url = 'http://localhost:8080/GetPrizeList' # TODO
+  # url = 'http://localhost:8080/GetPrizeList'
   unless data = await $.post_ url, act_id: @id
     return
 

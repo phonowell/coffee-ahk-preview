@@ -21,7 +21,7 @@ html, body
   user-select none
   -webkit-tap-highlight-color rgba(#000, 0)
 
-textarea
+textarea, #coffee
   $box()
   display block
   border 0
@@ -37,9 +37,11 @@ textarea
   background-color #555
   color #fff
   font-size 16px
+  text-align left
   line-height 1.5
 
 #coffee
+  background-color #272822
   left 5vw
   border-radius 16px 0 0 16px
 
@@ -48,3 +50,6 @@ textarea
   background-color #777
   box-shadow 0 4px 8px rgba(#000, 0.2) inset
   border-radius 0 16px 16px 0
+
+.CodeMirror
+  size 100%

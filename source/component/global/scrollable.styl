@@ -19,9 +19,6 @@
     &::-webkit-scrollbar
       display none
 
-    &.is-frozen
-      pointer-events none
-
   .scrollbar-scrollable
     absolute right top
     width 2px
@@ -37,7 +34,7 @@
     transition transform 200ms ease
     transform-origin top
 
-  h1, p
+  h1, h2, h3, p
     line-height 1.5
     margin-bottom 1em
     padding-right 0.1rem
@@ -46,6 +43,16 @@
     font-size 0.3rem
     font-weight bold
 
-  p
-    font-size 0.24rem
+  h2
     text-align left
+    font-size 0.28rem
+    font-weight bold
+
+  h3
+    text-align left
+    font-size 0.24rem
+    font-weight bold
+
+  p
+    text-align left
+    font-size 0.24rem

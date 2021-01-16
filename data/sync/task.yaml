@@ -5,5 +5,5 @@
 - task/prepare.ts@activity
 - task/sync.ts
 - task/tsconfig.json
-- task/update.ts@activity
+- task/update.ts
 - task/watch.ts@activity

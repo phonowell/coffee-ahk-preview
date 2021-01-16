@@ -58,11 +58,7 @@ class M {
 
   static async prepare_(): Promise<void> {
 
-    try {
-      await $.task('prepare')()
-    } catch (err) {
-      await $.exec_('npm run alice prepare')
-    }
+    await $.exec_('npm run alice prepare')
     await $.remove_('./src')
   }
 

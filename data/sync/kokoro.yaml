@@ -1,5 +1,6 @@
 - .eslintrc.yaml
 - .gitignore
+- .npmignore
 - .stylintrc
 - coffeelint.json
 - data/kokoro/babel.config.ts

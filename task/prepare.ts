@@ -25,7 +25,7 @@ async function countApi_(): Promise<string[]> {
 
   return (
     $.parseString((await $.read_('./task/mock.ts')) || '')
-      .match(/bind\(router, '\w+?'/gu) || []
+      .match(/register\(router, '\w+?'/gu) || []
   ).map(text => text.split("'")[1])
 }
 
