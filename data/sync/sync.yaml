@@ -1,8 +1,3 @@
-- data/sync/component.yaml
-- data/sync/function.yaml
-- data/sync/kokoro.yaml
-- data/sync/mock.yaml
-- data/sync/style.yaml
-- data/sync/sync.yaml@activity
-- data/sync/task.yaml
-- data/sync/toolkit.yaml
+- data/sync/kokoro.yaml@react
+- data/sync/style.yaml@react
+- data/sync/task.yaml@react

@@ -2,169 +2,102 @@ import $ from 'fire-keeper'
 
 // function
 
-async function compile_(): Promise<void> {
+const countCpt = async (): Promise<string[]> => (await $.source([
+  './src/component/**/*.tsx',
+  '!./src/component/global/**/*.tsx',
+])).map(source => source
+  .split('/src/component/')[1]
+  .split('.tsx')[0],
+)
 
-  await $.compile_([
-    './data/kokoro/babel.config.ts',
-    './data/kokoro/postcss.config.ts',
-    './data/kokoro/vue.config.ts',
+const countFn = async (): Promise<string[]> => (await $.source('./src/function/**/*.ts'))
+  .map(source => source
+    .split('/src/function/')[1]
+    .split('.ts')[0],
+  )
+
+const gitAdd = async (): Promise<void> => {
+
+  const list = await $.source([
+    './*.js',
+    './*.json',
+    './*.yaml',
+    './.gitignore',
+    './.npmignore',
+    './public/index.html',
+    './task/*.json',
   ])
-  await $.copy_('./data/kokoro/*.js', './')
 
-  await $.compile_([
-    './data/mock/*.yaml',
-  ])
-
-  await $.compile_([
-    './data/*.yaml',
-    '!./data/config.yaml',
-  ])
+  await $.exec(list.map(it => `git add -f ${it}`))
 }
 
-async function countApi_(): Promise<string[]> {
-
-  return (
-    $.parseString((await $.read_('./task/mock.ts')) || '')
-      .match(/register\(router, '\w+?'/gu) || []
-  ).map(text => text.split("'")[1])
+const main = async (): Promise<void> => {
+  await gitAdd()
+  await replaceReadme()
 }
 
-async function countCpt_(): Promise<string[]> {
+const replaceReadme = async (): Promise<void> => {
 
-  return (await $.source_('./source/component/part/**/*.pug'))
-    .map(source => source
-      .split('/source/component/part/')[1]
-      .split('.pug')[0]
-    )
-}
-
-async function countFn_(): Promise<string[]> {
-
-  const listFilename: string[] = (await $.source_([
-    './source/function/**/*.coffee',
-    './source/function/**/*.ts',
-  ])).map(source => $.getFilename(source))
-  const listSync: string[] = (await $.read_('./data/sync/function.yaml') as string[])
-    .map(source => $.getFilename(source).split('@')[0])
-  const listResult: string[] = []
-
-  for (const filename of listFilename) {
-    if (listSync.includes(filename)) continue
-    listResult.push(filename)
+  type Pkg = {
+    scripts: {
+      [key: string]: string
+    }
   }
 
-  return listResult
-}
+  const pkg = await $.read<Pkg>('./package.json')
 
-async function gitAdd_(): Promise<void> {
+  const source = './readme.md'
+  const name = $.getBasename($.getDirname($.normalizePath(source)))
+  let content = (await $.read<string>(source)) || ''
 
-  const list = [
-    '*.js',
-    '*.json',
-    '.gitignore',
-    '.npmignore',
-    'task/*.json',
-  ]
+  const listCpt = await countCpt()
+  const contCpt = listCpt.length
+    ? [
+      `## 组件/共${listCpt.length}个`,
+      '',
+      ...listCpt.map(_name => `- [${_name}](./src/component/${_name}.tsx)`),
+      '',
+    ]
+    : ''
 
-  await $.exec_(list.map(it => `git add -f ./${it}`))
-}
+  const listFn = await countFn()
+  const contFn = listFn.length
+    ? [
+      `## 函数/共${listFn.length}个`,
+      '',
+      ...listFn.map(_name => `- [${_name}](./src/function/${_name}.ts)`),
+      '',
+    ]
+    : ''
 
-async function main_(): Promise<void> {
-
-  await compile_()
-  await gitAdd_()
-  await replacePackage_()
-  await replaceReadme_()
-}
-
-async function replacePackage_(): Promise<void> {
-
-  type Data = {
-    name: string
-  }
-
-  const source = './package.json'
-  const content: Data = await $.read_(source) as Data
-  content.name = $.getBasename($.getDirname($.normalizePath(source)))
-  await $.write_(source, content)
-}
-
-async function replaceReadme_(): Promise<void> {
-
-  type Data = {
-    name: string
-    pageName: string
-  }
-
-  type Url = {
-    prd: string
-    pre: string
-    qrcode: string
-    test: string
-  }
-
-  const { name, pageName }: Data = await $.read_('./config.json') as Data
-
-  const source = './README.md'
-  let content: string = await $.read_(source) as string
-
-  const url: Url = {
-    prd: `https://www.bilibili.com/blackboard/${pageName}`,
-    pre: `https://www.bilibili.com/blackboard/preview/${pageName}`,
-    qrcode: 'https://cli.im/api/qrcode/code?text=',
-    test: 'https://www.bilibili.com/blackboard/preview/activity-D6lN6HmZ.html',
-  }
-  const contNav: string[] = [
-    '## 导航',
+  const contTask = [
+    `## 任务`,
     '',
-    `- 预览环境 - [页面](${url.pre}) / [二维码](${url.qrcode}${encodeURIComponent(url.pre)})`,
-    `- 生产环境 - [页面](${url.prd}) / [二维码](${url.qrcode}${encodeURIComponent(url.prd)})`,
-    `- [功能测试](${url.test})`,
-    '',
-  ]
-
-  const contFn: string[] = [
-    '## 函数',
-    '',
-    ...(await countFn_()).map(filename => `- [${filename}](./source/function/${filename})`),
-    '',
-  ]
-
-  const contCpt: string[] = [
-    '## 组件',
-    '',
-    ...(await countCpt_()).map(_name => `- ${_name}, ${['.pug', '.styl', '.coffee']
-      .map(extname => `[${extname}](./source/component/part/${_name}${extname})`)
-      .join(' / ')
-      }`),
-    '',
-  ]
-
-  const contApi: string[] = [
-    '## 接口',
-    '',
-    ...(await countApi_()).map(_name => `- [${_name}](./task/mock.ts)`),
-    '',
+    '```shell',
+    ...Object.keys(pkg.scripts)
+      .filter(key => key !== 'alice')
+      .map(key => `npm run ${key} // ${pkg.scripts[key]}`),
+    '```',
   ]
 
   const cont: string = [
     `# ${name}`,
     '',
-    ...contNav,
-    ...contFn,
+    '',
+    new Date().toLocaleString(),
+    '',
     ...contCpt,
-    ...contApi,
+    ...contFn,
+    ...contTask,
     '---',
   ].join('\n')
 
-  if (content.includes('---'))
-    content = content
-      .replace(/[\s\S]*?---/u, cont)
-  else
-    content = cont
+  if (content.includes('---')) content = content
+    .replace(/[\s\S]*?---/, cont)
+  else content = cont
 
-  await $.write_('./README.md', content)
+  await $.write(source, content)
 }
 
 // export
-export default main_
+export default main

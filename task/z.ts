@@ -2,9 +2,10 @@ import $ from 'fire-keeper'
 
 // function
 
-async function main_(): Promise<void> {
-  $.info('z')
+const main = async (): Promise<void> => {
+
+  await $.compile('./data/extended.yaml')
 }
 
 // export
-export default main_
+export default main

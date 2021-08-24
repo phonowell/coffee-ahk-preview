@@ -1,0 +1,50 @@
+@import '../include/basic'
+
+.area-compiler
+  width 100vw
+  height 100vh
+  background-image repeating-linear-gradient(45deg, rgba(97, 97, 97, 0.1) 0, rgba(97, 97, 97, 0.1) 2px, transparent 2px, transparent 4px), linear-gradient(90deg, rgb(43, 43, 43), rgb(43, 43, 43))
+
+  textarea, .CodeMirror
+    $box()
+    border 0
+    outline 0
+    resize none
+    appearance none
+    width 42.5vw
+    height calc(100vh - 10vw)
+    padding 2vw
+    line-height 2
+    background-color #222
+    color #555
+    font-size 1.5vw
+    border-radius 2vw
+    box-shadow 0 0 1px rgba(#fff, 0.2)
+    transition all 300ms
+
+    &:focus, &.CodeMirror-focused
+      color #999
+      box-shadow 0 0 1px rgba(#fff, 0.5), 0 0 4vw rgba(#000, 0.2)
+
+  .flag
+    height 5vw
+    line-height @height
+    color rgba(#fff, 0.1)
+    font-size 4vw
+    font-weight bold
+    pointer-events none
+
+.area-compiler .ipt-coffee
+  absolute left 5vw top 5vw
+  width 42.5vw
+  height calc(100vh - 10vw)
+  text-align left
+
+.area-compiler .ipt-ahk
+  absolute right 5vw top 5vw
+
+.area-compiler .flag-coffee
+  absolute right 55vw bottom 5vw
+
+.area-compiler .flag-ahk
+  absolute right 7.5vw bottom 5vw

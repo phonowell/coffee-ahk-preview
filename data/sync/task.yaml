@@ -1,9 +1,5 @@
 - task/alice.ts
-- task/build.ts@activity
-- task/cpt.ts@activity
-- task/end.ts@activity
-- task/prepare.ts@activity
+- task/build.ts@react
 - task/sync.ts
-- task/tsconfig.json
-- task/update.ts
-- task/watch.ts@activity
+- task/tsconfig.json@react
+- task/watch.ts@react

@@ -1,5 +1,13 @@
-import $ from 'fire-keeper'
-import _ from 'lodash'
+import $copy from 'fire-keeper/copy'
+import $getName from 'fire-keeper/getName'
+import $info from 'fire-keeper/info'
+import $isExisted from 'fire-keeper/isExisted'
+import $isSame from 'fire-keeper/isSame'
+import $prompt from 'fire-keeper/prompt'
+import $read from 'fire-keeper/read'
+import $source from 'fire-keeper/source'
+import $stat from 'fire-keeper/stat'
+import _uniq from 'lodash/uniq'
 
 // interface
 
@@ -10,25 +18,25 @@ type Option = {
 
 // function
 
-async function ask_(
+const ask = async (
   source: string,
-  target: string
-): Promise<string> {
+  target: string,
+): Promise<string> => {
 
   const isExisted = [
-    await $.isExisted_(source),
-    await $.isExisted_(target),
+    await $isExisted(source),
+    await $isExisted(target),
   ]
 
   const mtime: [number, number] = [0, 0]
   if (isExisted[0]) {
-    const stat = await $.stat_(source)
+    const stat = await $stat(source)
     mtime[0] = stat
       ? stat.mtimeMs
       : 0
   }
   if (isExisted[1]) {
-    const stat = await $.stat_(target)
+    const stat = await $stat(target)
     mtime[1] = stat
       ? stat.mtimeMs
       : 0
@@ -55,7 +63,7 @@ async function ask_(
     })
 
   if (!choice.length) {
-    $.info('skip')
+    $info('skip')
     return 'skip'
   }
 
@@ -71,7 +79,7 @@ async function ask_(
     value: 'skip',
   })
 
-  return $.prompt_({
+  return $prompt({
     default: indexDefault,
     list: choice,
     message: 'and you decide to...',
@@ -79,14 +87,12 @@ async function ask_(
   })
 }
 
-async function load_(): Promise<string[]> {
+const load = async (): Promise<string[]> => {
 
-  $.info().pause()
-  const listData = await Promise.all(
-    (await $.source_('./data/sync/**/*.yaml'))
-      .map(source => $.read_(source))
-  ) as string[][]
-  $.info().resume()
+  $info().pause()
+  const listSource = await $source('./data/sync/**/*.yaml')
+  const listData = (await Promise.all<string[]>(listSource.map(source => $read(source))))
+  $info().resume()
 
   let result: string[] = []
 
@@ -96,60 +102,59 @@ async function load_(): Promise<string[]> {
       ...data,
     ]
 
-  return _.uniq(result)
+  return _uniq(result)
 }
 
-async function main_(): Promise<void> {
+const main = async (): Promise<void> => {
 
-  const data = await load_()
+  const data = await load()
 
   // diff
   for (const line of data) {
 
-    const _list = line.split('@')
-    const [path, extra] = [_list[0], _list[1] || '']
+    const [path, extra] = line.split('@')
 
-    const _list2 = extra.split('/')
+    const list = (extra || '').split('/')
     const [namespace, version] = [
-      _list2[0] || 'default',
-      _list2[1] || 'latest',
+      list[0] || 'default',
+      list[1] || 'latest',
     ]
 
     const source = `./${path}`
     let target = `../midway/${path}`
-    const { basename, dirname, extname } = $.getName(target)
+    const { basename, dirname, extname } = $getName(target)
     target = `${dirname}/${basename}-${namespace}-${version}${extname}`
 
     // eslint-disable-next-line no-await-in-loop
-    if (await $.isSame_([source, target])) continue
+    if (await $isSame([source, target])) continue
 
-    $.info(`'${source}' is different from '${target}'`)
+    $info(`'${source}' is different from '${target}'`)
 
     // eslint-disable-next-line no-await-in-loop
-    const value = await ask_(source, target)
+    const value = await ask(source, target)
     if (!value) break
 
     // eslint-disable-next-line no-await-in-loop
-    await overwrite_(value, source, target)
+    await overwrite(value, source, target)
   }
 }
 
-async function overwrite_(
+const overwrite = async (
   value: string,
   source: string,
-  target: string
-): Promise<void> {
+  target: string,
+): Promise<void> => {
 
   if (value === 'export') {
-    const { dirname, filename } = $.getName(target)
-    await $.copy_(source, dirname, filename)
+    const { dirname, filename } = $getName(target)
+    await $copy(source, dirname, filename)
   }
 
   if (value === 'import') {
-    const { dirname, filename } = $.getName(source)
-    await $.copy_(target, dirname, filename)
+    const { dirname, filename } = $getName(source)
+    await $copy(target, dirname, filename)
   }
 }
 
 // export
-export default main_
+export default main
