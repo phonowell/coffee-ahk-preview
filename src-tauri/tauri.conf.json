@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "coffee-ahk-preview",
-    "version": "0.1.0"
+    "version": "0.0.1"
   },
   "build": {
     "distDir": "../build",
@@ -54,9 +54,9 @@
     "windows": [
       {
         "title": "Coffee-AHK Preview",
-        "width": 800,
-        "height": 600,
-        "resizable": true,
+        "width": 1280,
+        "height": 720,
+        "resizable": false,
         "fullscreen": false
       }
     ],
