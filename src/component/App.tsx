@@ -1,3 +1,4 @@
+import 'core-js'
 import './App.css'
 import React from 'react'
 import Stage from './Stage'
